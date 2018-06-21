@@ -1,0 +1,12 @@
+{
+  "name": "PWA",
+  "version": "1.0.0",
+  "description": "[داخل اینجا توضیح داده](https://developers.google.com/web/tools/lighthouse/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
