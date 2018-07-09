@@ -8,5 +8,5 @@ self.addEventListener('activate',()=>{
 })
 
 self.addEventListener('fetch',(event)=>{
-    console.log(event);
+    // console.log(event);
 })
