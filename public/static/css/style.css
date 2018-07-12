@@ -1,7 +1,8 @@
 body * {
     direction: rtl;
     text-align: right;
-    font-family: Vazir;    
+    font-family: Vazir; 
+    /* background-color: aqua;    */
 }
 
 .Nav_link {

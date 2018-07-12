@@ -1,25 +1,44 @@
+const CACHE_VERSION = 1.5;
+
+const CURRENT_CACHE = `v${CACHE_VERSION}`;
+
 self.addEventListener('install', (event) => {
     console.log('installing service worker');
     event.waitUntil(
-        caches.open('v1')
+        caches.open(CURRENT_CACHE)
             .then(cache => {
-                cache.add('/static/css/materialize.min.css');
-                cache.add('/static/css/vazir.css');
+                cache.addAll([
+                    '/',
+                    '/static/css/materialize.min.css',
+                    '/static/js/app.js',
+                    '/static/js/materialize.min.js',
+                    '/static/css/vazir.css',
+                    '/static/css/style.css'
+                ]);
             })
     );
 });
 
-self.addEventListener('activate', () => {
-    console.log('activateing service worker');
-    console.log('v4');
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (CURRENT_CACHE !== cacheName) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
 })
 
 self.addEventListener('fetch', (event) => {
     // console.log(event);
 
     event.respondWith(
-        caches.open('v1').then(cache =>{
-            return cache.match(event.request).then(response =>{
+        caches.open(CURRENT_CACHE).then(cache => {
+            return cache.match(event.request).then(response => {
                 return response || fetch(event.request);
             });
         })
