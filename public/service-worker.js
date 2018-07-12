@@ -1,4 +1,4 @@
-const CACHE_VERSION = 1.5;
+const CACHE_VERSION = 1.7;
 
 const CURRENT_CACHE = `v${CACHE_VERSION}`;
 
@@ -39,7 +39,16 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.open(CURRENT_CACHE).then(cache => {
             return cache.match(event.request).then(response => {
-                return response || fetch(event.request);
+                if (response) {
+                    return response;
+                }
+
+                return fetch(event.request).then((networkResponse)=>{
+                    console.log(networkResponse);
+                    cache.put(event.request, networkResponse.clone());
+
+                    return networkResponse;
+                }).catch(err => console.log(err));
             });
         })
     );
