@@ -37,23 +37,38 @@ self.addEventListener('activate', (event) => {
     );
 })
 
+// self.addEventListener('fetch' , (event) => {
+//     event.respondWith(
+//         caches.match(event.request).then(response => {
+//             if(response) return response;
+
+//             return fetch(event.request).then(networkResponse => {
+//                 caches.open(CURRENT_CACHE['dynamic'])
+//                     .then(cache => {
+//                         cache.put(event.request , networkResponse.clone());
+//                         return networkResponse;
+//                     })
+//             })
+//         })
+//     )
+// });
+
 self.addEventListener('fetch', (event) => {
     // console.log(event);
 
     event.respondWith(
-        caches.open(CURRENT_CACHE['static']).then(cache => {
-            return cache.match(event.request).then(response => {
-                if (response) {
-                    return response;
-                }
+        caches.match(event.request).then(response => {
+            if (response) {
+                return response;
+            }
 
-                return fetch(event.request).then((networkResponse)=>{
-                    // console.log(networkResponse);
-                    cache.put(event.request, networkResponse.clone());
-
+            return fetch(event.request).then((networkResponse)=>{
+                // console.log(networkResponse);
+                caches.open(CURRENT_CACHE['dynamic']).then(cache=>{
+                    cache.put(event.request,networkResponse.clone());
                     return networkResponse;
-                }).catch(err => console.log(err));
-            });
+                })
+            }).catch(err => console.log(err));
         })
     );
 });
