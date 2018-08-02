@@ -1,13 +1,17 @@
-const CACHE_VERSION = 1.7;
+const CACHE_VERSION = 2;
 
-const CURRENT_CACHE = `v${CACHE_VERSION}`;
+// const CURRENT_CACHE = `v${CACHE_VERSION}`;
+const CURRENT_CACHE = {
+    static: `s-v${CACHE_VERSION}`,
+    dynamic: `d-v${CACHE_VERSION}`
+};
 
 self.addEventListener('install', (event) => {
     console.log('installing service worker');
     event.waitUntil(
-        caches.open(CURRENT_CACHE)
-            .then(cache => {
-                cache.addAll([
+        caches.open(CURRENT_CACHE['static'])
+        .then(cache => {
+            cache.addAll([
                     '/',
                     '/static/css/materialize.min.css',
                     '/static/js/app.js',
@@ -24,7 +28,7 @@ self.addEventListener('activate', (event) => {
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (CURRENT_CACHE !== cacheName) {
+                    if (CURRENT_CACHE['static'] !== cacheName) {
                         return caches.delete(cacheName);
                     }
                 })
@@ -37,14 +41,14 @@ self.addEventListener('fetch', (event) => {
     // console.log(event);
 
     event.respondWith(
-        caches.open(CURRENT_CACHE).then(cache => {
+        caches.open(CURRENT_CACHE['static']).then(cache => {
             return cache.match(event.request).then(response => {
                 if (response) {
                     return response;
                 }
 
                 return fetch(event.request).then((networkResponse)=>{
-                    console.log(networkResponse);
+                    // console.log(networkResponse);
                     cache.put(event.request, networkResponse.clone());
 
                     return networkResponse;
