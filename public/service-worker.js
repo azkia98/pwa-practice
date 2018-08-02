@@ -1,4 +1,4 @@
-const CACHE_VERSION = 2;
+const CACHE_VERSION = 2.1;
 
 // const CURRENT_CACHE = `v${CACHE_VERSION}`;
 const CURRENT_CACHE = {
@@ -17,7 +17,8 @@ self.addEventListener('install', (event) => {
                     '/static/js/app.js',
                     '/static/js/materialize.min.js',
                     '/static/css/vazir.css',
-                    '/static/css/style.css'
+                    '/static/css/style.css',
+                    '/offline.html'
                 ]);
             })
     );
@@ -52,7 +53,11 @@ self.addEventListener('fetch', (event) => {
                     cache.put(event.request,networkResponse.clone());
                     return networkResponse;
                 })
-            }).catch(err => console.log(err));
+            }).catch(err => {
+                return caches.open(CURRENT_CACHE['static']).then(cache=>{
+                    return cache.match('/offline.html');
+                })
+            });
         })
     );
 });
