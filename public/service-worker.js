@@ -37,22 +37,6 @@ self.addEventListener('activate', (event) => {
     );
 })
 
-// self.addEventListener('fetch' , (event) => {
-//     event.respondWith(
-//         caches.match(event.request).then(response => {
-//             if(response) return response;
-
-//             return fetch(event.request).then(networkResponse => {
-//                 caches.open(CURRENT_CACHE['dynamic'])
-//                     .then(cache => {
-//                         cache.put(event.request , networkResponse.clone());
-//                         return networkResponse;
-//                     })
-//             })
-//         })
-//     )
-// });
-
 self.addEventListener('fetch', (event) => {
     // console.log(event);
 
