@@ -42,6 +42,17 @@ fetch('http://roocket.org/api/products')
         products.forEach(product => {
             createUi(product)
         })
+    }).catch(err =>{
+        if(!'indexedDB' in window){
+            alert('Your browser dosent support of the indexedDB');
+            return 0;
+        }
+        db.products.toArray().then(products =>{
+            console.log('indexedDb',products);
+            products.forEach(product =>{
+                createUi(product);
+            });
+        });    
     });
 
 function createUi(product) {
