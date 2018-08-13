@@ -24,13 +24,44 @@ document.querySelector('.fixed-action-btn a').addEventListener('click', (e) => {
     if (deferredPrompt) {
         console.log('hello');
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResultes)=>{
-            if(choiceResultes.outcome === 'accepted')
-            {
+        deferredPrompt.userChoice.then((choiceResultes) => {
+            if (choiceResultes.outcome === 'accepted') {
                 console.log('accepted');
-            }else{
+            } else {
                 console.log('user dissmissed');
             }
         });
     }
 })
+
+
+fetch('http://roocket.org/api/products')
+    .then(response => response.json())
+    .then(res => {
+        let products = res.data.data;
+        products.forEach(product => {
+            createUi(product)
+        })
+    });
+
+function createUi(product) {
+    // console.log(product);
+    let card1 = `
+        <div class="col s12 m4">
+            <div class="card">
+                <div class="card-image">
+                    <img src="${product.image}">
+                    <span class="card-title">${product.title}</span>
+                </div>
+                <div class="card-content">
+                    <p>${product.body}</p>
+                </div>
+            </div>
+        </div>
+    `;
+
+    let productContentElement = document.getElementById('products');
+    // console.log(productContentElement);
+    productContentElement.innerHTML += card1;
+    
+}

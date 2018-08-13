@@ -1,4 +1,4 @@
-const CACHE_VERSION = 2.1;
+const CACHE_VERSION = 2.4;
 
 // const CURRENT_CACHE = `v${CACHE_VERSION}`;
 const CURRENT_CACHE = {
