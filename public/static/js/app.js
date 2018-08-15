@@ -73,6 +73,7 @@ function createUi(product) {
 
     let productContentElement = document.getElementById('products');
     // console.log(productContentElement);
-    productContentElement.innerHTML += card1;
+    if(productContentElement != undefined)
+        productContentElement.innerHTML += card1;
     
 }
