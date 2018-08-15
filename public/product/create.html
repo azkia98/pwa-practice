@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/css/materialize.min.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/vazir.css" />    
+    <link rel="stylesheet" type="text/css" href="/static/css/vazir.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,91 +25,102 @@
     <link rel="app-touch-icon" href="/static/icons/homescreen512.png" sizes="512x512">
     <meta name="theme-color" content="#1e88e5">
 </head>
+
 <body>
 
-  
+
     <ul class="sidenav pr0" id="mobile-demo">
-      <li><a href="sass.html">صفحه اصلی</a></li>
-      <li><a href="badges.html">ایونت ها</a></li>
-      <li><a href="collapsible.html">درباره ما</a></li>
+        <li><a href="sass.html">صفحه اصلی</a></li>
+        <li><a href="badges.html">ایونت ها</a></li>
+        <li><a href="collapsible.html">درباره ما</a></li>
     </ul>
-          
-      
+
+
     <nav class="blue darknes-1" id="navbar">
-      <div class="container">
-        <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">ایونت</a>                            
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-            <ul class="Nav_link left hide-on-med-and-down">
-              <li><a href="index.html">صفحه اصلی</a></li>
-              <li><a href="events.html">ایونت ها</a></li>
-              <li><a href="about.html">درباره ما</a></li>
-            </ul>
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo">ایونت</a>
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="Nav_link left hide-on-med-and-down">
+                    <li><a href="index.html">صفحه اصلی</a></li>
+                    <li><a href="events.html">ایونت ها</a></li>
+                    <li><a href="about.html">درباره ما</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
     </nav>
-    <div class="progress margin-0 blue darken-2"> 
-      <div class="indeterminate blue darken-4"></div> 
-    </div> 
+    <div class="progress margin-0 blue darken-2">
+        <div class="indeterminate blue darken-4"></div>
+    </div>
     <div class="container">
-      <div class="row">
-          <form action="#" id="send-product">
-            <h4>ایجاد محصول جدید</h4>
-            <div class="input-field col s12">
-                <input type="text" name="title" placeholder="عنوان محصول">
-            </div>
-            <div class="input-field col s12">
-                <textarea name="body" class="materialize-textarea" placeholder="متن محصول"></textarea>
-            </div>
-            <div class="input-field col s12">
-                <input type="file" name="image" placeholder="تصویر محصول">
-            </div>
-            <div class="input-field col s12">
-                <input type="text" name="price" placeholder="قیمت محصول">
-            </div>
-            <button type="submit" class="waves-effect waves-light btn">ثبت محصول</button>
-          </form>
-      </div>
+        <div class="row">
+            <form action="#" id="send-product">
+                <h4>ایجاد محصول جدید</h4>
+                <div class="input-field col s12">
+                    <input type="text" name="title" placeholder="عنوان محصول">
+                </div>
+                <div class="input-field col s12">
+                    <textarea name="body" class="materialize-textarea" placeholder="متن محصول"></textarea>
+                </div>
+                <div class="input-field col s12">
+                    <input type="file" name="image" placeholder="تصویر محصول">
+                </div>
+                <div class="input-field col s12">
+                    <input type="text" name="price" placeholder="قیمت محصول">
+                </div>
+                <button type="submit" class="waves-effect waves-light btn">ثبت محصول</button>
+            </form>
+        </div>
     </div>
 
     <div class="fixed-action-btn">
-      <a class="btn-floating btn-large waves-effect waves-light red" href="create.html"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" href="create.html"><i class="material-icons">add</i></a>
     </div>
-              
-    
+
+
     <script src="/static/js/dexie.js"></script>
     <script src="/static/js/db.js"></script>
     <script src="/static/js/app.js"></script>
     <script src="/static/js/materialize.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var elems = document.querySelectorAll('.sidenav');
             var instances = M.Sidenav.init(elems, {});
         });
 
         let sendProduct = document.getElementById('send-product');
-        sendProduct.addEventListener('submit' , function(event) {
-          event.preventDefault();
-          
-          let title = this.querySelector('input[name="title"]'),
-              body = this.querySelector('textarea[name="body"]'),
-              image = this.querySelector('input[name="image"]'),
-              price = this.querySelector('input[name="price"]');
-            
-    
-          if(title.value == '' || body.value == '' || price.value == '' || image.files[0] == undefined) {
-              console.log('data not valid');
-              return;
-          }
+        sendProduct.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-          console.log('run run ruuuuun')
+            let title = this.querySelector('input[name="title"]'),
+                body = this.querySelector('textarea[name="body"]'),
+                image = this.querySelector('input[name="image"]'),
+                price = this.querySelector('input[name="price"]');
+
+
+            if (title.value == '' || body.value == '' || price.value == '' || image.files[0] == undefined) {
+                console.log('data not valid');
+                return;
+            }
+
+            console.log('run run ruuuuun')
 
         })
 
-      //  if('serviceWorker' in navigator && 'SyncManager' in window) {
+        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            navigator.serviceWorker.ready.then(swRegistration => {
+                return swRegistration.sync.register('task-1')
+                .then(()=>{
+                    console.log('syncProgress');
+                }).catch(err =>{
+                    console.error(err);
+                });
+            })
+        } else {
 
-      //  } 
+        }
 
-    </script>    
+    </script>
 </body>
+
 </html>
