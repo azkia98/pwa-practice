@@ -69,8 +69,14 @@
   </div>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large waves-effect waves-light red" href="create.html">
+    <a class="btn-floating btn-large waves-effect waves-light red" href="/create.html">
       <i class="material-icons">add</i>
+    </a>
+  </div>
+
+  <div class="fixed-action-btn left">
+    <a id="notifications" class="btn-floating btn-large waves-effect waves-light darken-3 blue" href="#">
+      <i class="material-icons">notifications</i>
     </a>
   </div>
 
@@ -79,10 +85,55 @@
   <script src="/static/js/app.js"></script>
   <script src="/static/js/materialize.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
       var elems = document.querySelectorAll('.sidenav');
       var instances = M.Sidenav.init(elems, {});
+      let notificationBtn = document.getElementById('notifications');
+
+
+      const getNotificationPermissionState = async () => {
+        if (navigator.permissions) {
+          let permissionStatus = await navigator.permissions.query({ name: 'notifications' });
+          return permissionStatus.state;
+        }
+      }
+
+      const disableNotificationBtn = () => {
+        notificationBtn.classList.remove('blue');
+        notificationBtn.classList.add('grey');
+        notificationBtn.removeAttribute('href');
+      }
+
+      let currentPermissionState = await getNotificationPermissionState();
+      if (currentPermissionState == 'denied') {
+        console.warn('the notification permission has been blocked');
+        disableNotificationBtn();
+      }
+
+      notificationBtn.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+          console.log('Service woker and pusher aren\'t support');
+          return 0;
+        }
+
+
+        let resultPermisionStatus = await Notification.requestPermission();
+        if (resultPermisionStatus !== 'granted') {
+          console.log('no notification permission granted !');
+          disableNotificationBtn();
+          return;
+        } else {
+          //  new Notification('باتشکر',{});
+          console.log('fasdf');
+          navigator.serviceWorker.ready.then(registration => {
+            registration.showNotification('با تشکر', {});
+          });
+        }
+      })
     });
+
+
   </script>
 </body>
 

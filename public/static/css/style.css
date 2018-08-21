@@ -30,3 +30,7 @@ body * {
     right: 0;
 }
 
+.left{
+    left: 23px;
+    right: auto;
+}
