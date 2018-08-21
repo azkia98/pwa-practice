@@ -30,9 +30,9 @@
 
 
     <ul class="sidenav pr0" id="mobile-demo">
-        <li><a href="sass.html">صفحه اصلی</a></li>
-        <li><a href="badges.html">ایونت ها</a></li>
-        <li><a href="collapsible.html">درباره ما</a></li>
+        <li><a href="/index.html">صفحه اصلی</a></li>
+        <li><a href="/badges.html">ایونت ها</a></li>
+        <li><a href="/collapsible.html">درباره ما</a></li>
     </ul>
 
 
@@ -103,22 +103,28 @@
                 return;
             }
 
-            console.log('run run ruuuuun')
+            console.log('add event listener')
+            if ('serviceWorker' in navigator && 'SyncManager' in window) {
+                navigator.serviceWorker.ready.then(swRegistration => {
+                    db.syncProducts.put({
+                        title: title.value,
+                        body: body.value,
+                        image: image.files[0],
+                        price: price.value
+                    }).then(() => {
+                        return swRegistration.sync.register('sync-new-products')
+                    }).then(() => {
+                        console.log('Product saved for Sync Progress');
+                    }).catch(err => {
+                        console.error(err);
+                    });;
+                })
+            } else {
+
+            }
 
         })
 
-        if ('serviceWorker' in navigator && 'SyncManager' in window) {
-            navigator.serviceWorker.ready.then(swRegistration => {
-                return swRegistration.sync.register('task-1')
-                .then(()=>{
-                    console.log('syncProgress');
-                }).catch(err =>{
-                    console.error(err);
-                });
-            })
-        } else {
-
-        }
 
     </script>
 </body>

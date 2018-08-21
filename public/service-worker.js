@@ -82,9 +82,9 @@ self.addEventListener("fetch", event => {
   }
 });
 
-self.addEventListener("sync", function(event) {
-  console.log("background-sync",event);
-  if (event.tag == "task-1") {
+self.addEventListener("sync", function (event) {
+  console.log("background-sync", event);
+  if (event.tag == "sync-new-products") {
     event.waitUntil(doSomthing());
   }
 });
@@ -92,5 +92,30 @@ self.addEventListener("sync", function(event) {
 // Functions
 
 async function doSomthing() {
-  console.log("run somthing");
+  db.syncProducts.toArray()
+    .then(products => {
+      products.forEach(product => {
+        let fd = new FormData();
+        fd.append('title', product.title);
+        fd.append('body', product.body);
+        fd.append('image', product.image);
+        fd.append('price', product.price);
+
+        fetch('http://roocket.org/api/products/store?api_token=LVdlETLiD9WcmWpfA3nQLA1SiZsWMXAQiDQGC8Tr5jwQRdqATpk9ZKRTpL8Q', {
+          method: 'POST',
+          body: fd
+        })
+          .then(res => res.json())
+          .then(res => {
+            console.log('response on the sync', res);
+            if (res.status == 'success') {
+              db.syncProducts.where({ title: product.title })
+                .delete()
+                .then(() => console.log('Delete item from syncProduct', product.title));
+            }
+          }).catch(err => {
+            console.log('err from service worker sync proccess');
+          });
+      })
+    })
 }
