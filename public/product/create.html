@@ -91,6 +91,12 @@
         <a class="btn-floating btn-large waves-effect waves-light red" href="create.html"><i class="material-icons">add</i></a>
     </div>
 
+    <div class="fixed-action-btn left">
+        <a id="locationsBtn" class="btn-floating btn-large waves-effect waves-light darken-3 blue" href="#">
+            <i class="material-icons">location_on</i>
+        </a>
+    </div>
+
 
     <script src="/static/js/dexie.js"></script>
     <script src="/static/js/db.js"></script>
@@ -105,14 +111,35 @@
             const canvasElement = document.getElementById('canvasPicture');
             const captureBtn = document.getElementById('captureBtn');
             const imageInput = document.getElementById('image');
+            const locationBtn = document.getElementById('locationsBtn');
 
-            // navigator.mediaDevices.getUserMedia(constraints)
-            //     .then(function (stream) {
-            //         /* use the stream */
-            //     })
-            //     .catch(function (err) {
-            //         /* handle the error */
-            //     });
+            locationBtn.addEventListener('click', event => {
+                event.preventDefault();
+                if (!(navigator.geolocation)) {
+                    console.warn("Geolocation isn't supported for this browser");
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(position => {
+                    console.log(position);
+                    console.log(`long : ${position.coords.longitude} , lat: ${position.coords.latitude}`);
+                }, err => {
+                    switch (err.code) {
+                        case 0:
+                            console.log('unknow error');
+                            break;
+                        case 1:
+                            console.log('permission denied')
+                            break;
+                        case 2:
+                            console.log('position unavailable');
+                            break;
+                        case 3:
+                            console.log('time out');
+                            break;
+                    }
+                }, {})
+            });
 
             const showMedia = () => {
                 videoPlayer.style.display = 'block';
@@ -125,7 +152,7 @@
                 captureBtn.style.display = 'none';
             }
 
-            imageInput.addEventListener('change',event =>{
+            imageInput.addEventListener('change', event => {
                 window.picture = event.target.files[0];
             })
 
@@ -167,17 +194,17 @@
                 console.warn('i can\'t find andy video device');
             }
 
-            captureBtn.addEventListener('click',event =>{
+            captureBtn.addEventListener('click', event => {
                 event.preventDefault();
                 noShowMedia();
                 canvasElement.style.display = 'block';
 
                 let context = canvasElement.getContext('2d');
 
-                context.drawImage(videoPlayer,0,0,130,100);
+                context.drawImage(videoPlayer, 0, 0, 130, 100);
                 videoPlayer.srcObject.getVideoTracks().forEach(track => track.stop());
 
-                canvasElement.toBlob(blob =>{
+                canvasElement.toBlob(blob => {
                     window.picture = blob;
                 });
             })
