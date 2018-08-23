@@ -41,7 +41,7 @@ self.addEventListener("activate", event => {
   );
 });
 
-self.addEventListener("fetch", event => {
+/* self.addEventListener("fetch", event => {
   // console.log(event);
   let url = "http://roocket.org/api/products";
   if (url.indexOf(event.request.url) != -1) {
@@ -80,7 +80,7 @@ self.addEventListener("fetch", event => {
       })
     );
   }
-});
+}); */
 
 self.addEventListener("sync", function (event) {
   console.log("background-sync", event);
