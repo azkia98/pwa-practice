@@ -131,6 +131,33 @@
           });
         }
       })
+
+      const showNotification = () => {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.showNotification('با تشکر', {
+            body: 'طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. ',
+            dir: 'ltr',
+            lang : 'fa',
+            icon: '/static/icons/homescreen96.png',
+            badge: '/static/icons/homescreen96.png',
+            image : '/static/images/16766.jpg',
+            actions:[
+              {
+                title: 'دانلود کتاب',
+                action: 'download-action'
+              },
+              {
+                title: 'مشاهده کتاب',
+                action: 'show-action'
+              },
+            ]
+          });
+        });
+      }
+
+      showNotification();
+
+
     });
 
 

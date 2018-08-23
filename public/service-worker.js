@@ -119,3 +119,26 @@ async function doSomthing() {
       })
     })
 }
+
+
+self.addEventListener('notificationclick', event => {
+  let notification = event.notification;
+  let action = event.action;
+  console.log(action);
+
+  notification.clone();
+
+  switch (event.action) {
+    case 'download-action':
+      promiseCahin = clients.openWindow('/about1.html');
+      break;
+    case 'show-action':
+      promiseCahin = clients.openWindow('/about2.html');
+      break;
+    default:
+      promiseCahin = clients.openWindow('/about.html');
+      break;
+  }
+
+  event.waitUntil(promiseCahin);
+});
