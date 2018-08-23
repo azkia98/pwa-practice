@@ -98,10 +98,10 @@ async function doSomthing() {
         let fd = new FormData();
         fd.append('title', product.title);
         fd.append('body', product.body);
-        fd.append('image', product.image);
+        fd.append('image', product.image, Date.now() + '.png');
         fd.append('price', product.price);
 
-        fetch('http://roocket.org/api/products/store?api_token=LVdlETLiD9WcmWpfA3nQLA1SiZsWMXAQiDQGC8Tr5jwQRdqATpk9ZKRTpL8Q', {
+        fetch('http://roocket.org/api/products/store?api_token=kDVf6JxVeqVK0OkiZlsnFbEo0eDHFJoOrnqj5LBlijUDS0BmDewpGJJDdvAY', {
           method: 'POST',
           body: fd
         })

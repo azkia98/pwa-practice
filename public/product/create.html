@@ -25,9 +25,11 @@
     <link rel="app-touch-icon" href="/static/icons/homescreen512.png" sizes="512x512">
     <meta name="theme-color" content="#1e88e5">
     <style>
-        /* #videoPlayer , #canvasPicture , #captureBtn{
+        #videoPlayer,
+        #canvasPicture,
+        #captureBtn {
             display: none;
-        } */
+        }
     </style>
 </head>
 
@@ -75,7 +77,7 @@
                     </div>
                 </div>
                 <div class="input-field col s12">
-                    <input type="file" name="image" placeholder="تصویر محصول">
+                    <input type="file" name="image" id="image" placeholder="تصویر محصول">
                 </div>
                 <div class="input-field col s12">
                     <input type="text" name="price" placeholder="قیمت محصول">
@@ -112,6 +114,21 @@
             //         /* handle the error */
             //     });
 
+            const showMedia = () => {
+                videoPlayer.style.display = 'block';
+                captureBtn.style.display = 'block';
+                imageInput.style.display = 'none';
+            }
+
+            const noShowMedia = () => {
+                videoPlayer.style.display = 'none';
+                captureBtn.style.display = 'none';
+            }
+
+            imageInput.addEventListener('change',event =>{
+                window.picture = event.target.files[0];
+            })
+
             const getMedia = async () => {
                 if (!('mediaDevices' in navigator)) {
                     console.warn('MediaDevices is\'nt support');
@@ -123,11 +140,11 @@
 
             const checkVideoDevice = async () => {
                 let devices = await navigator.mediaDevices.enumerateDevices();
-                let status= false;
+                let status = false;
                 devices.forEach(device => {
                     // console.log(device);
-                    if(device.kind == 'videoinput'){
-                        status=true;
+                    if (device.kind == 'videoinput') {
+                        status = true;
                     }
                 });
 
@@ -139,14 +156,31 @@
 
                 navigator.mediaDevices.getUserMedia(constraints)
                     .then(function (stream) {
+                        showMedia();
                         videoPlayer.srcObject = stream;
                     })
                     .catch(function (err) {
-                        console.warn('We have error about stream the camera',err);
+                        console.warn('We have error about stream the camera', err);
                     });
             } else {
+                noShowMedia();
                 console.warn('i can\'t find andy video device');
             }
+
+            captureBtn.addEventListener('click',event =>{
+                event.preventDefault();
+                noShowMedia();
+                canvasElement.style.display = 'block';
+
+                let context = canvasElement.getContext('2d');
+
+                context.drawImage(videoPlayer,0,0,130,100);
+                videoPlayer.srcObject.getVideoTracks().forEach(track => track.stop());
+
+                canvasElement.toBlob(blob =>{
+                    window.picture = blob;
+                });
+            })
         });
 
         let sendProduct = document.getElementById('send-product');
@@ -159,7 +193,7 @@
                 price = this.querySelector('input[name="price"]');
 
 
-            if (title.value == '' || body.value == '' || price.value == '' || image.files[0] == undefined) {
+            if (title.value == '' || body.value == '' || price.value == '' || window.picture == undefined) {
                 console.log('data not valid');
                 return;
             }
@@ -170,7 +204,7 @@
                     db.syncProducts.put({
                         title: title.value,
                         body: body.value,
-                        image: image.files[0],
+                        image: window.picture,
                         price: price.value
                     }).then(() => {
                         return swRegistration.sync.register('sync-new-products')
@@ -183,6 +217,8 @@
             } else {
 
             }
+
+
 
         })
 
